@@ -7,6 +7,12 @@ The Western United States has seen historic growth in the last decade. This grow
 
 ### Site Selection
 
-Trail count data from MORA were selected on two primary conditions. Was (1) the trail one that allowed the infrared counter to all traffic, essentially out-and-back trails, and (2) was the data within the last six years (2015-2020). Polygons were drawn to reflect the areas that would capture all visitors logged by infrared counters. These polygons would then provide the boundaries for social media posts associated with counter data (Fig. 1)
+Trail count data from MORA were selected on two primary conditions. Was (1) the trail one that allowed the infrared counter to all traffic, essentially out-and-back trails, and (2) was the data within the last six years (2015-2020). Polygons were drawn to reflect the areas that would capture all visitors logged by infrared counters. These polygons would then provide the boundaries for social media posts associated with counter data.
 
 <img src="docs/sites.png" width=50% height=50%>
+
+### Preliminary Results
+
+The on-site counts and social media posts for MORA were then used to test the ability of a model, parameterized in Mount Baker-Snoqualmie National Forest (MBS) (Wood, et al. 2020), to predict visitation on the national park scale. Model 1 was created using MBS data and tested using only MORA data onsite counts and predictors, while model 2 was built using ⅓ insample data from MORA and tested with the other ⅔ MORA data (Tbl. 1). Model 1s performance was _____ with a _Pearson’s of X and an R-squared of X. Model 2 showed marked improvement with a Pearson’s of X and an R-squared of X. The next steps to help explain error will be the inclusion of an indicator variable to capture unknown categorical differences in between MBS and MORA and the addition of random effects creating a mixed effects model. The hope is to further develop this model into a tool capable of explaining 70% of the error in complement my work assessing the effects of human interactions with aquatic environments in remote locations.
+
+
