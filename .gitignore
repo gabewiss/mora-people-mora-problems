@@ -1,5 +1,5 @@
 # Ignore all data files
 data/
-raw/
+
 *.csv
 *.ipynb
