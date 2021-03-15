@@ -9,4 +9,4 @@ The Western United States has seen historic growth in the last decade. This grow
 
 Trail count data from MORA were selected on two primary conditions. Was (1) the trail one that allowed the infrared counter to all traffic, essentially out-and-back trails, and (2) was the data within the last six years (2015-2020). Polygons were drawn to reflect the areas that would capture all visitors logged by infrared counters. These polygons would then provide the boundaries for social media posts associated with counter data (Fig. 1)
 
-<img src="https://github.com/gabewiss/mora-people-mora-problems/docs/sites.png" width=50% height=50%>
+<img src="docs/sites.png" width=50% height=50%>
