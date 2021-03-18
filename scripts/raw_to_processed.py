@@ -10,27 +10,27 @@ import os
 import pandas as pd
 
 #  set directory for 'os'
-os.chdir('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems'
-         '/data/raw')
+# os.chdir('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems'
+        #  '/data/raw')
 
 #  import 'lookup_table' and set index
-lookup_table = pd.read_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/tables/lookup_table.csv')
+lookup_table = pd.read_csv('tables/lookup_table.csv')
 lookup_table = lookup_table.set_index('loc')
 
 #  import exclusion.csv
-exclusion_table = pd.read_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/tables/exclusion.csv', encoding='utf8')
+exclusion_table = pd.read_csv('tables/exclusion.csv', encoding='utf8')
 exclusion_table['start'] = pd.to_datetime(exclusion_table['start'])
 exclusion_table['stop'] = pd.to_datetime(exclusion_table['stop'])
 
 #  process those two sites that had A and B counts for the same year
-eagle_a = pd.read_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
+eagle_a = pd.read_csv('data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
                       names=['date', 'people_count'])
-eagle_b = pd.read_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
+eagle_b = pd.read_csv('data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
                       names=['date', 'people_count'])
-rampart_a = pd.read_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/data/raw_A_B_duplicates/Rampart Ridge A 2011 '
-                        'RAW.csv', names=['date', 'people_count'])
-rampart_b = pd.read_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/data/raw_A_B_duplicates/Rampart Ridge B 2011 '
-                        'RAW.csv', names=['date', 'people_count'])
+rampart_a = pd.read_csv('data/raw_A_B_duplicates/Rampart Ridge A 2011 RAW.csv',
+                      names=['date', 'people_count'])
+rampart_b = pd.read_csv('data/raw_A_B_duplicates/Rampart Ridge B 2011 RAW.csv',
+                      names=['date', 'people_count'])
 
 eagle_a['date'] = pd.to_datetime(eagle_a['date'])
 eagle_a = eagle_a.resample('D', on='date').sum()
@@ -82,10 +82,13 @@ raw_concat = pd.DataFrame([])
 
 # loop for pulling raw count files, adding specific columns and
 # adding to larger spreadsheet
-for filename in glob.glob('*.{}'.format('csv')):
+for filepath in glob.glob('data/raw/*.{}'.format('csv')):
 
     # use filename to read csv into 'temp variable'
-    temp = pd.read_csv(filename, names=['date', 'people_count'])
+    temp = pd.read_csv(filepath, names=['date', 'people_count'])
+
+    # make a filename from the filepath
+    filename = filepath.split('/')[-1]
 
     # resample before adding new columns
     temp['date'] = pd.to_datetime(temp['date'])
@@ -160,15 +163,13 @@ raw_concat_final_exclusion = raw_concat_final_exclusion.append(to_append,
 raw_concat_final_exclusion.reset_index(level=0, inplace=True)
 
 # export daily counts
-raw_concat_final_exclusion.to_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/data/processed/day_counts.csv',
-                                  index=False)
+raw_concat_final_exclusion.to_csv('data/processed/day_counts.csv', index=False)
 
 # declaring df for appending in line 179
 weekly = pd.DataFrame([])
 
 # loop to create weekly spreadsheet from daily spreadsheet
 for siteid in raw_concat_final_exclusion.siteid.unique():
-
     resample_siteid = pd.DataFrame([])
 
     # filter by 'siteid'
@@ -180,6 +181,7 @@ for siteid in raw_concat_final_exclusion.siteid.unique():
     resample_siteid.index = pd.to_datetime(resample_siteid.index)
 
     for year in resample_siteid.index.year.unique():
+        print('Processing site %i year %i'%(siteid, year))
 
         year_filter = resample_siteid[resample_siteid.index.year == year]
 
@@ -234,4 +236,4 @@ weekly = weekly.drop(columns=['daycount'])
 weekly.reset_index(level=0, inplace=True)
 
 # export
-weekly.to_csv('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems/data/processed/weekly_counts.csv', index=False)
+weekly.to_csv('data/processed/weekly_counts.csv', index=False)
