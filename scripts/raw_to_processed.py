@@ -9,10 +9,6 @@ import numpy as np
 import os
 import pandas as pd
 
-#  set directory for 'os'
-# os.chdir('/Users/gabrielwisswaesser/Desktop/mora-people-mora-problems'
-        #  '/data/raw')
-
 #  import 'lookup_table' and set index
 lookup_table = pd.read_csv('tables/lookup_table.csv')
 lookup_table = lookup_table.set_index('loc')
@@ -115,9 +111,9 @@ raw_concat.drop_duplicates(subset=['date', 'siteid'], inplace=True,
 
 # chenge to datetime index and exclude nov-april
 raw_concat['date'] = pd.to_datetime(raw_concat['date'])
-raw_concat.set_index(['date'], inplace=True)
-raw_concat_excld_nov_to_apr = raw_concat[(raw_concat.index.month > 4) &
-                                         (raw_concat.index.month < 11)]
+# raw_concat.set_index(['date'], inplace=True)
+raw_concat_excld_nov_to_apr = raw_concat[(raw_concat.date.dt.month > 4) &
+                                         (raw_concat.date.dt.month < 11)]
 
 # empty dataframes for looping
 raw_concat_final_exclusion = pd.DataFrame([])
@@ -139,10 +135,9 @@ for siteid in exclusion_table.siteid.unique():
         # unpack tuple containing row elements
         index, siteid, start, stop = row
 
-        # use 'start' and 'stop' dates to delete rows containing
-        # excludable dates
-        drop_me = exclusion[(exclusion.index >= start) &
-                            (exclusion.index <= stop)].index
+        # drop rows between 'start' and 'stop' dates
+        drop_me = exclusion[(exclusion.date.dt.date >= start) &
+                            (exclusion.date.dt.date <= stop)].index
         exclusion = exclusion.drop(index=drop_me[0:])
 
     raw_concat_final_exclusion = raw_concat_final_exclusion.append(exclusion,
@@ -159,9 +154,6 @@ raw_concat_final_exclusion = raw_concat_final_exclusion.append(to_append,
                                                                ignore_index# noqa
                                                                =False)
 
-# reset index so dates show in csv table
-raw_concat_final_exclusion.reset_index(level=0, inplace=True)
-
 # export daily counts
 raw_concat_final_exclusion.to_csv('data/processed/day_counts.csv', index=False)
 
@@ -173,23 +165,18 @@ for siteid in raw_concat_final_exclusion.siteid.unique():
     resample_siteid = pd.DataFrame([])
 
     # filter by 'siteid'
-    resample_siteid = raw_concat_final_exclusion
-    [raw_concat_final_exclusion.siteid == siteid]
+    resample_siteid = raw_concat_final_exclusion[raw_concat_final_exclusion.siteid == siteid]
 
-    # set 'date' to datetime for filtering by year
-    resample_siteid.set_index(['date'], inplace=True)
-    resample_siteid.index = pd.to_datetime(resample_siteid.index)
-
-    for year in resample_siteid.index.year.unique():
+    for year in resample_siteid.date.dt.year.unique():
         print('Processing site %i year %i'%(siteid, year))
 
-        year_filter = resample_siteid[resample_siteid.index.year == year]
+        year_filter = resample_siteid[resample_siteid.date.dt.year == year].copy()
 
         # add column to count days of observations in the week
         year_filter['daycount'] = 1
 
         # resample by week
-        year_filter = year_filter.resample('W-THU', label='left',
+        year_filter = year_filter.resample('W-THU', label='left', on='date',
                                            closed='left').agg({'people_count':
                                                                'sum',
                                                                'adjusted_'
