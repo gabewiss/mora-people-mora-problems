@@ -10,22 +10,22 @@ import os
 import pandas as pd
 
 #  import 'lookup_table' and set index
-lookup_table = pd.read_csv('tables/lookup_table.csv')
+lookup_table = pd.read_csv('../tables/lookup_table.csv')
 lookup_table = lookup_table.set_index('loc')
 
 #  import exclusion.csv
-exclusion_table = pd.read_csv('tables/exclusion.csv', encoding='utf8')
+exclusion_table = pd.read_csv('../tables/exclusion.csv', encoding='utf8')
 exclusion_table['start'] = pd.to_datetime(exclusion_table['start'])
 exclusion_table['stop'] = pd.to_datetime(exclusion_table['stop'])
 
 #  process those two sites that had A and B counts for the same year
-eagle_a = pd.read_csv('data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
+eagle_a = pd.read_csv('../data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
                       names=['date', 'people_count'])
-eagle_b = pd.read_csv('data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
+eagle_b = pd.read_csv('../data/raw_A_B_duplicates/Eagle Peak A 2011 RAW.csv',
                       names=['date', 'people_count'])
-rampart_a = pd.read_csv('data/raw_A_B_duplicates/Rampart Ridge A 2011 RAW.csv',
+rampart_a = pd.read_csv('../data/raw_A_B_duplicates/Rampart Ridge A 2011 RAW.csv',
                       names=['date', 'people_count'])
-rampart_b = pd.read_csv('data/raw_A_B_duplicates/Rampart Ridge B 2011 RAW.csv',
+rampart_b = pd.read_csv('../data/raw_A_B_duplicates/Rampart Ridge B 2011 RAW.csv',
                       names=['date', 'people_count'])
 
 eagle_a['date'] = pd.to_datetime(eagle_a['date'])
@@ -155,7 +155,7 @@ raw_concat_final_exclusion = raw_concat_final_exclusion.append(to_append,
                                                                =False)
 
 # export daily counts
-raw_concat_final_exclusion.to_csv('data/processed/day_counts.csv', index=False)
+raw_concat_final_exclusion.to_csv('../data/processed/day_counts.csv', index=False)
 
 # declaring df for appending in line 179
 weekly = pd.DataFrame([])
@@ -223,4 +223,4 @@ weekly = weekly.drop(columns=['daycount'])
 weekly.reset_index(level=0, inplace=True)
 
 # export
-weekly.to_csv('data/processed/weekly_counts.csv', index=False)
+weekly.to_csv('../data/processed/weekly_counts.csv', index=False)
