@@ -55,15 +55,13 @@ rampart_combined = rampart_combined.groupby('date').mean()
 rampart_combined.reset_index(level=0, inplace=True)
 
 # add 'siteid', 'year', and 'adjusted count' columns
-eagle_combined['siteid'] = lookup_table.loc['Eagle Peak A 2011 RAW.csv']
-['siteid']
+eagle_combined['siteid'] = lookup_table.loc['Eagle Peak A 2011 RAW.csv']['siteid']
 eagle_combined['adjusted_people_count'] = (eagle_combined['people_count'] *
                                            (lookup_table.loc['Eagle Peak '
                                             'A 2011 RAW.csv']
                                             ['adjustment_factor'])) / 2
 
-rampart_combined['siteid'] = lookup_table.loc['Rampart Ridge A 2011 RAW.csv']
-['siteid']
+rampart_combined['siteid'] = lookup_table.loc['Rampart Ridge A 2011 RAW.csv']['siteid']
 rampart_combined['adjusted_people_count'] = (rampart_combined['people_count'] *
                                              (lookup_table.loc['Rampart Ridge '
                                               'A 2011 RAW.csv']
@@ -78,8 +76,9 @@ raw_concat = pd.DataFrame([])
 
 # loop for pulling raw count files, adding specific columns and
 # adding to larger spreadsheet
-for filepath in glob.glob('data/raw/*.{}'.format('csv')):
+for filepath in glob.glob('../data/raw/*.{}'.format('csv')):
 
+    print(filepath)
     # use filename to read csv into 'temp variable'
     temp = pd.read_csv(filepath, names=['date', 'people_count'])
 
