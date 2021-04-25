@@ -15,10 +15,9 @@ Trail count data from MORA were selected on two primary conditions. Was (1) the 
 
 The on-site counts and social media posts for each site within MORA were then used to test the ability of a visitation model, parameterized in Mount Baker-Snoqualmie National Forest (Wood, et al. 2020), to predict visitation at similar sites within the National Park. Model 1 was created using MBS data and tested using only MORA data onsite counts. Model 2 was built using MBS data dn ⅓ of the available data from MORA and tested with the other ⅔ of MORA count data (Tbl. 1). Model 1 had an average Pearson’s of 0.58 and an R-squared of 0.34 and model 2  had a Pearson’s of 0.64 and an R-squared of 0.41 (n=1000). There was no statistical difference between models 1 and 2. Model 3 had a Pearson’s of 0.80 and an R-squared of 0.64. Model 3is showing a high correlation between weekly on-site counts and weekly predictions. The next steps are to further investigate fit to increase correlation further and implement at other National Parks 
 
-| Model          | Data Build Model    | Efect Type    | Pearson's (n=500) | R-squared (n=500)|
-| :------------- | :----------:        | -----------:  | -----------:      | -----------:     |
-| 1              |National Forest      | Fixed         | 0.60              | 0.36             |
-| 2              | Put Pipes In        | Like this \   |                   |                  |
-| 3  |                                      
-| 4  | 
+| Model          | Data Build Model      | Efect Type    | Pearson's (n=500) | R-squared (n=500)|
+| :------------- | :----------:          | -----------:  | -----------:      | -----------:     |
+| 1              | National Forest       | Fixed         | 0.60              | 0.36             |
+| 2              | National Forest + 1/3 | Fixed         | 0.62              | 0.38             |
+| 3              | National Forest + 1/3 | Mixed         | 0.80              | 0.64             |                                     
 
